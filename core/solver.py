@@ -4,7 +4,7 @@ import codecs
 
 class ProblemSolver(LastErrorHolder):
     """
-    Problem solver for GoRoKu game
+    Problem solver for Tamaku game
     """
     def __init__(self):
         super().__init__()
