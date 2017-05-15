@@ -2,6 +2,22 @@
 __pycache__/
 *.py[cod]
 *$py.class
+/api/__pycache__
+/api/protocol/__pycache__/__init__.cpython-34.pyc
+/api/protocol/__pycache__/tapvisorprotocolparser.cpython-34.pyc
+/dbschema/__pycache__/shared.cpython-34.pyc
+/dbschema/__pycache__
+/system/__pycache__
+/system/utils/__pycache__
+/api/owner_sub_queries/__pycache__
+/api/owner_sub_routes/__pycache__
+/api/debug_sub_routes/__pycache__
+/api/dcd/__pycache__
+/api/reports_sub_routes/__pycache__
+/api/menu/__pycache__
+/api/settings/__pycache__
+/api/about/__pycache__
+__pycache__
 
 # C extensions
 *.so
@@ -20,7 +36,6 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -43,7 +58,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*.cover
+*,cover
 .hypothesis/
 
 # Translations
@@ -52,14 +67,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
 
 # Sphinx documentation
 docs/_build/
@@ -67,35 +74,16 @@ docs/_build/
 # PyBuilder
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# dotenv
-.env
-
-# virtualenv
-.venv
-venv/
-ENV/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
+#project files
+/instance_uid.py
+/log
+/tmp
+/sendfile_download/
+node_modules
+cached_uglify
+.idea
+.build/
+*.log
+/dev
+*.lprof
+test.py
