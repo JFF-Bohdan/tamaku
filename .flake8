@@ -1,5 +1,5 @@
 [flake8]
-exclude = .build, .git, .idea, __pycache__, bp, devdoc, log, pkgs, sendfile_download, software, static, templates, __init__.py, test.py
+exclude = .build, .git, .idea, __pycache__, bp, devdoc, log, pkgs, sendfile_download, software, static, templates, __init__.py
 max-line-length = 150
 max-complexity = 10
 filename = *.py

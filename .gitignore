@@ -2,22 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-/api/__pycache__
-/api/protocol/__pycache__/__init__.cpython-34.pyc
-/api/protocol/__pycache__/tapvisorprotocolparser.cpython-34.pyc
-/dbschema/__pycache__/shared.cpython-34.pyc
-/dbschema/__pycache__
-/system/__pycache__
-/system/utils/__pycache__
-/api/owner_sub_queries/__pycache__
-/api/owner_sub_routes/__pycache__
-/api/debug_sub_routes/__pycache__
-/api/dcd/__pycache__
-/api/reports_sub_routes/__pycache__
-/api/menu/__pycache__
-/api/settings/__pycache__
-/api/about/__pycache__
-__pycache__
 
 # C extensions
 *.so
@@ -75,14 +59,10 @@ docs/_build/
 target/
 
 #project files
-/instance_uid.py
 /log
-/tmp
-/sendfile_download/
 node_modules
 cached_uglify
 .idea
-.build/
 *.log
 /dev
 *.lprof
