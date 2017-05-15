@@ -12,7 +12,7 @@ Name of game was changed according to company requirements.
 
 ## Game rules
 
-Pat and Mat are playing a game called GoRoKu on their pocket calculator. The game begins
+Pat and Mat are playing a game called Tamaku on their pocket calculator. The game begins
 with a positive integer displayed on the calculator screen. Pat starts the game and then they
 alternate their turns. At each turn:
 
