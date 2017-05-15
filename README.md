@@ -1,0 +1,2 @@
+# tamaku
+Tamaku game solver
