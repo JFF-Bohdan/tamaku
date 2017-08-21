@@ -5,10 +5,11 @@ Tamaku game solver
 
 I got this task on interview for one company. And I was amazed by task. So, here is my solution of this task.
 
-As a part of task candidate must provide source code and output file for large input file. Large input file provided by company.
+As a part of task candidate must provide source code and output file for large input file. Large input file provided by company, you can 	find it in `data/large_data.zip`
 
 Name of game was changed according to company requirements.
 
+This is new version, which contains original file with data (48M in `.zip`) and uses `multiprocessing` for CPU utilization and `mmap` for super-fast file loading.
 
 ## Game rules
 
@@ -27,7 +28,6 @@ game. If the player can’t make any move, he looses the game.
 
 Both players are pretty clever and play the game optimally. Still, there can be only one
 winner. Can you determine who wins, if you know the starting number?
-
 
 ## Task
 
@@ -72,57 +72,83 @@ In the second game, N=2. Pat subtracts 1, and Mat looses the game.
 
 ## Usage
 
+### Before execution
+
+You **can** use `make` to automate boring boring stuff, especially typing long command lines. So, you can use rules coded in my `Makefile`. This file configured to use in Windows, so in Linux you still need use long command lines.
+
+Make for Windows can be found [here](http://gnuwin32.sourceforge.net/packages/make.htm).
+
+Also, you need install `virtualenv` for secure and safe development. To do this you just need execute:
+
+`pip install virtualenv`
+
+To setup environment you just need exec `make` in project root directory. It will setup virtual environment and will install all needful packages.
+
+But if you just need run application to solve tasks, you can execute it just by using system `Python`.
+
 ### Solving input taks
 If you just process input file use:
 
-```
-tamaku.py -i .\tasks\task_file.data
-```
+`python tamaku.py -i ./data/small_data.data`
 
-Where ```.\tasks\task_file.data``` path to your input task file. In this case program will read input file and then produce solutions to console.
+
+Where `./data/small_data.data` path to your input task file. In this case program will read input file and then produce solutions to console.
+
+Or you can type `make run_small` to execute solver against small data file.
 
 ### Solving input tasks and measuring execution time
-If you want program to be a little bit more verbose, for example calculate execution time, you can use ```-v``` switch:
+If you want program to be a little bit more verbose, for example calculate execution time, you can use `-w` switch:
 
-```
-tamaku.py -v -i .\tasks\task_file.data
-```
+`python tamaku.py -w -i ./data/small_data.data`
+
+Or you can use `-v` (verbose) switch to measure data load time and execution time.
 
 In this case, after all output lines, program will print information about execution time.
 
 ### Limiting output
 
-In case when you developing new features and profiling program, you can set limit for output. In this case, program will be terminated when **<count>** solutions will be found. For example, if your file contains 10M tasks, you can solve just 100K tasks and measure execution time to predict time needed for 10M tasks.
+In case when you developing new features and profiling program, you can set limit for output. In this case, program will be terminated when **<count>** solutions will be found. For example, if your file contains 10M tasks, you can solve just 10K tasks and measure execution time to predict time needed for 10M tasks.
 
-Use ```-l <count>``` command line argument, where ```<count>``` your limit.
+Use `-l <count>` command line argument, where `<count>` your limit.
 
-```
-tamaku.py -l 3 -v -i .\tasks\task_file.data
-```
+`python tamaku.py -l 10000 -w -t ./tmp -i ./data/large_data.zip`
 
-In given example output will be limited to 3 lines.
+In given example output will be limited to 10000 lines.
+
+Also, we need specify temporary directory where input file will be decompressed if necessary.
+
+Note: program will unzip all files with `.zip` extenstion into specified temp directory before execution.
+
+Or you can just type `make run_large` using `make`.
 
 
-### Only measure execution time, without results print
+### Executing application against file with 10M tasks
 
-In case when you testing algorithm modifications you can use ```-n``` switch with ```-v``` switch
+In case when you testing algorithm modifications you can use `-n` switch with ```-v``` switch
 
-```
-tamaku.py -n -l 3 -v -i .\tasks\task_file.data
-```
+`python tamaku.py -w -t ./tmp -i ./data/large_data.zip -o ./results/result.data`
+
+Warn: you should create directory for ouput (`./results` in this case) and temporary directory (`./tmp` in this case) before running application.
 
 In given example:
 
-* ```-i .\tasks\task_file.data``` - input file ```.\tasks\task_file.data```
-* ```-v``` - verbose output enabled
-* ```-l 3``` - output limited to 3 lines
-* ```-n```- output will not be printed to output console
+* `-w` - measure execution time and print it to `stderr`
+* `-t ./tmp` - specifies directory for files decompression;
+* `-i ./data/large_data.zip` - specifies input file;
+* `-o ./results/result.data` - specifies output file path.
 
-In this case program ouput will be:
+Execution will take up to 10-15 minutes, depending to you hardware. Sample output 
 
-```
-solving tasks
-0.0s
-```
+Sample output on my laptop (i7-3632QM):
 
-So, program execution time is less than a second.
+`Done @ 6.0m 35.93s - 10000000 tasks processed`
+
+## Developing
+
+Main points:
+
+* to run test just execute `make tests`, it will check implementation against pre-defined data set;
+* core function can be found in `./solver/solver_impl.py`;
+* data processing (loading and orchestration) can be found in `./data_processor/data_processor.py` - it loads data using `mmap` and then executes data processing using multiprocessing.
+
+Hope you like it. Enjoy!

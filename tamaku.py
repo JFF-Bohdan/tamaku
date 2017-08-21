@@ -1,72 +1,83 @@
 import os
-from optparse import OptionParser
-from system.stopwatch import Stopwatch
-from system.shared import makeAbsoluteAppPath
+import sys
+import time
 
-import signal
-from core.solver import ProblemSolver
-import multiprocessing
+from data_processor.data_processor import process_data
 
-
-def signal_handler(signal, frame):
-    """
-    Handler for Ctrl-C combination. Terminates program execution
-
-    :param signal:
-    :param frame:
-    :return: None
-    """
-    print()
-    print("Quit by Ctrl-C")
-    print()
-    exit(0)
-
-
-def cpu_count():
-    return multiprocessing.cpu_count()
+from support.command_line_parser import parse_command_line
+from support.support_funcs import decompress_file, is_file_zipped, print_seconds_nice
 
 
 def main():
-    # parsing command line
-    parser = OptionParser()
-    parser.add_option("-i", "--inputfile", type=str, dest="input_file", default=None, help="Input file")
-    parser.add_option("-v", "--verbose", action="store_true", dest="verbose_output", default=False, help="Verbose output")
-    parser.add_option("-n", "--notprint", action="store_true", dest="not_print_result", default=False, help="Not print result")
-    parser.add_option("-l", "--limit", type=int, dest="limit_output", default=None, help="Limit output")
+    args = parse_command_line()
 
-    (cmd_line_options, args) = parser.parse_args()
-    if cmd_line_options.input_file is None:
-        print("ERR: please specify input file")
-        parser.print_help()
-        return -1
+    if args.inputfile is None:
+        print("ERR: please specify output file")
+        exit(1)
 
-    abs_file_name = makeAbsoluteAppPath(cmd_line_options.input_file)
-    if not os.path.exists(abs_file_name):
-        print("ERR: input file does not exists, file name: {}".format(cmd_line_options.input_file))
-        return -2
+    if not os.path.exists(args.inputfile):
+        print("ERR: data file does not exists. file name: {}".format(args.inputfile))
+        exit(2)
 
-    watch = Stopwatch(True, True, True)
+    tm_begin = None
+    if args.verbose or args.worktimetostderr:
+        tm_begin = time.time()
 
-    solver = ProblemSolver()
-    solver.file_name = abs_file_name
+    if args.limit:
+        args.limit = int(args.limit)
 
-    solver.verbose_mode = cmd_line_options.verbose_output
-    solver.not_print_result = cmd_line_options.not_print_result
-    solver.limit_output = cmd_line_options.limit_output
-    solver.threads_count = cpu_count()
+    decompressed_file_name = None
 
-    if not solver.process():
-        print("ERROR problem solving task: {}".format(solver.errorText))
-        return -3
+    if is_file_zipped(args.inputfile):
+        if args.temp_dir is None:
+            print("temporary directory is't specified - can't decompress file")
+            exit(4)
 
-    if cmd_line_options.verbose_output:
-        print(watch)
-    return 0
+        decompressed_file_name = decompress_file(args.inputfile, args.temp_dir)
+        if decompressed_file_name is None:
+            exit(5)
+
+        args.inputfile = decompressed_file_name
+
+    processed_tasks_count = process_input_file(args, decompressed_file_name)
+
+    if args.verbose or args.worktimetostderr:
+        seconds_elapsed = round(time.time() - tm_begin, 3)
+        msg = "{} - {} tasks processed".format(
+            print_seconds_nice(seconds_elapsed, "Done @ "),
+            processed_tasks_count
+        )
+
+        if args.worktimetostderr:
+            sys.stderr.write("{}\n".format(msg))
+        else:
+            print(msg)
+
+
+def process_input_file(args, decompressed_file_name):
+    output_file = None
+    try:
+        if args.outputfile is not None:
+            output_file = open(args.outputfile, "wt")
+
+        out = output_file if output_file is not None else sys.stdout
+
+        processed_tasks_count = process_data(
+            args.inputfile,
+            out,
+            not args.dontprint,
+            args.limit,
+            args.verbose
+        )
+    finally:
+        if output_file is not None:
+            output_file.close()
+
+        if decompressed_file_name is not None:
+            os.remove(decompressed_file_name)
+
+    return processed_tasks_count
 
 
 if __name__ == "__main__":
-    # initializing Ctrl-C handler
-    signal.signal(signal.SIGINT, signal_handler)
-
-    res = main()
-    exit(res)
+    main()
