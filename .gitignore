@@ -60,10 +60,5 @@ docs/_build/
 target/
 
 #project files
-log/
-tmp/
-node_modules
-cached_uglify
 .idea
-results/
-dev/
+results

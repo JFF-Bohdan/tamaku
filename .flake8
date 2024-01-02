@@ -3,30 +3,21 @@ exclude =
 	.build,
 	.git,
 	.idea,
+	.cache, 
 	__pycache__,
-	dev,
-	devdoc,
 	log,
+	venv,
 	__init__.py,
-	env*
-max-line-length = 150
+	tests
+
+max-line-length = 120
 max-complexity = 10
 filename = *.py
 format = default
 inline-quotes = "
+max-function-return-stmts = 6
 ignore =
-	# E221 multiple spaces before operator
-	E221,
-	# whitespace before ':'
-	E203,
-	# whitespace before ')'
-	E202,
-	# multiple spaces after ','
-	E241,
-	# unexpected spaces around keyword / parameter equals
-	E251,
-	#comparison to True should be 'if cond is True:' or 'if cond (it's needed for SQLAlchemy)
-	E712
-
-
-
+    # G004 Logging statement uses f-string
+    G004,
+    # SCS109 Use of builtin `open` for writing is discouraged in favor of `os.open` to allow for setting file permissions
+    SCS109,

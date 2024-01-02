@@ -3,15 +3,16 @@ Tamaku game solver
 
 ## General information
 
-I got this task on interview for one company. And I was amazed by task. So, here is my solution of this task.
+I got this task during an interview, and I was amazed by it. So, here is my solution for this task.
 
-As a part of task candidate must provide source code and output file for large input file. Large input file provided by company, you can 	find it in `data/large_data.zip`
+Candidate must provide a source code and output file for large input file. 
+Example large input file provided by a company, can be found in `data/large_data.zip`
 
-Name of game was changed according to company requirements.
-
-This is new version, which contains original file with data (48M in `.zip`) and uses `multiprocessing` for CPU utilization and `mmap` for super-fast file loading.
+The name of this game was changed following a deal with the company to share information about this task.
 
 ## Game rules
+
+### Description
 
 Pat and Mat are playing a game called Tamaku on their pocket calculator. The game begins
 with a positive integer displayed on the calculator screen. Pat starts the game and then they
@@ -29,18 +30,14 @@ game. If the player can’t make any move, he looses the game.
 Both players are pretty clever and play the game optimally. Still, there can be only one
 winner. Can you determine who wins, if you know the starting number?
 
-## Task
+### Task
 
-**Input**
+#### Input file
 
 The first line of the input contains G, a number of games played. 0 < G < 10,000,000Then
 follows G lines, each containing a starting integer 0 < N < 1,000,000,000.
 
-**Output**
-
-For each game print Pat if the first player has winning strategy, otherwise print Mat.
-
-**Sample Input**
+Sample input:
 
 ```
 7
@@ -53,7 +50,11 @@ For each game print Pat if the first player has winning strategy, otherwise prin
 999999999
 ```
 
-**Sample Output**
+#### Output file
+
+For each game print PAT if the first player has winning strategy, otherwise print MAT.
+
+Sample output (for the input provided above):
 
 ```
 MAT
@@ -65,90 +66,135 @@ PAT
 MAT
 ```
 
-**Explanation**
+Explanation:
 
-In the first game, N=1 and Pat has no valid move, and looses.
-In the second game, N=2. Pat subtracts 1, and Mat looses the game.
+- In the first game, N=1 and Pat has no valid move, and looses.
+- In the second game, N=2. Pat subtracts 1, and Mat looses the game.
 
-## Usage
+## About the solution
 
-### Before execution
+This is a new version, focused on simplicity and efficiency. It uses `multiprocessing` for utilization of all CPU 
+cores and able to decompress input file if necessary.
 
-You **can** use `make` to automate boring boring stuff, especially typing long command lines. So, you can use rules coded in my `Makefile`. This file configured to use in Windows, so in Linux you still need use long command lines.
+### Initialization:
 
-Make for Windows can be found [here](http://gnuwin32.sourceforge.net/packages/make.htm).
+First initialize and activate virtual environment by 
+following [instructions](https://docs.python.org/3/library/venv.html) or simply by running:
 
-Also, you need install `virtualenv` for secure and safe development. To do this you just need execute:
+```shell
+python -m virtualenv venv
+```
 
-`pip install virtualenv`
+and then (on Windows):
 
-To setup environment you just need exec `make` in project root directory. It will setup virtual environment and will install all needful packages.
+```shell
+.\venv\Scripts\activate
+```
 
-But if you just need run application to solve tasks, you can execute it just by using system `Python`.
+then you need to install all dependencies by running:
 
-### Solving input taks
-If you just process input file use:
+```shell
+pip install -r requirements-dev.txt
+```
 
-`python tamaku.py -i ./data/small_data.data`
+Personally I prefer to use `task` utility from https://taskfile.dev/ which is a very good replacement 
+for Makefiles. If you have it you can run:
 
+```shell
+task environ
+```
 
-Where `./data/small_data.data` path to your input task file. In this case program will read input file and then produce solutions to console.
+(I tested it on Windows, hope it would work on Linux too)
 
-Or you can type `make run_small` to execute solver against small data file.
+Once you will have all dependencies installed, you can install package itself by running (in virtual environment):
 
-### Solving input tasks and measuring execution time
-If you want program to be a little bit more verbose, for example calculate execution time, you can use `-w` switch:
+```shell
+python setup.py develop
+```
 
-`python tamaku.py -w -i ./data/small_data.data`
+or (with help of `task` utility)
 
-Or you can use `-v` (verbose) switch to measure data load time and execution time.
+```shell
+task develop-install
+```
 
-In this case, after all output lines, program will print information about execution time.
+### Usage
 
-### Limiting output
+You can run the application by using:
 
-In case when you developing new features and profiling program, you can set limit for output. In this case, program will be terminated when **<count>** solutions will be found. For example, if your file contains 10M tasks, you can solve just 10K tasks and measure execution time to predict time needed for 10M tasks.
+```shell
+tamaku --input-file ./data/small_data.txt --output-file ./results/small_data.txt
+```
 
-Use `-l <count>` command line argument, where `<count>` your limit.
+Where:
 
-`python tamaku.py -l 10000 -w -t ./tmp -i ./data/large_data.zip`
+- `tamaku` - is application itself
+- `--input-file ./data/small_data.txt` - path to input file
+- `--output-file ./results/small_data.txt` - path to output file
 
-In given example output will be limited to 10000 lines.
+In case if zip-compressed file will be provided as input file, tool will automatically 
+decompress it in a temporary folder, process it and then delete temporary folder.
 
-Also, we need specify temporary directory where input file will be decompressed if necessary.
+At the end of execution tool will generate information about execution time spent for file 
+processing.
 
-Note: program will unzip all files with `.zip` extenstion into specified temp directory before execution.
+Example command line for big dataset:
 
-Or you can just type `make run_large` using `make`.
+```shell
+tamaku --input-file ./data/large_data.zip --output-file ./results/large_data.txt
+```
 
+### Testing
 
-### Executing application against file with 10M tasks
+To run tests please execute:
 
-In case when you testing algorithm modifications you can use `-n` switch with ```-v``` switch
+```shell
+python -m pytest tests -vvv
+```
 
-`python tamaku.py -w -t ./tmp -i ./data/large_data.zip -o ./results/result.data`
+Or just simply:
 
-Warn: you should create directory for ouput (`./results` in this case) and temporary directory (`./tmp` in this case) before running application.
+```shell
+task tests
+```
 
-In given example:
+For coverage report generation please run:
 
-* `-w` - measure execution time and print it to `stderr`
-* `-t ./tmp` - specifies directory for files decompression;
-* `-i ./data/large_data.zip` - specifies input file;
-* `-o ./results/result.data` - specifies output file path.
+```shell
+python -m pytest tests -vvv --cov=tamaku
+```
 
-Execution will take up to 10-15 minutes, depending to you hardware. Sample output 
+And then generate reports by using:
 
-Sample output on my laptop (i7-3632QM):
+```shell
+python -m coverage html
+```
 
-`Done @ 6.0m 35.93s - 10000000 tasks processed`
+Or just use (I told you, `task` tool is just great):
 
-## Developing
+```shell
+task coverage
+```
 
-Main points:
+### Tuning and profiling
 
-* to run test just execute `make tests`, it will check implementation against pre-defined data set;
-* core function can be found in `./solver/solver_impl.py`;
-* data processing (loading and orchestration) can be found in `./data_processor/data_processor.py` - it loads data using `mmap` and then executes data processing using multiprocessing.
+At the end of execution tool will generate information about time used for processing dataset 
+excluding time for decompression (if it was necessary).
+
+Example outputs:
+
+- `Done @ 6.0m 35.93s - 10000000 tasks processed` (older version, executed on i7-3632QM with 32 GiB RAM)
+- `Execution time 1 minute, 24 seconds and 94 milliseconds (10000000 tasks processed)` (i9-10885H with 64 GiB RAM)
+
+If you would like to make it faster, you probably will focus on 
+`tamaku.solver:solve_task` and `tamaku.solver:find_best_response`. You can tune it with help of 
+[`timeit`](https://docs.python.org/3/library/timeit.html) module.
+
+Example results (on i9-10885H):
+
+```
+$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)"
+5000 loops, best of 5: 55.6 usec per loop
+```
 
 Hope you like it. Enjoy!
