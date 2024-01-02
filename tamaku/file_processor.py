@@ -49,7 +49,7 @@ def process_stream(
     for _, chunk_data in enumerate(results_generator):
         output_stream.write("\n".join(chunk_data))
         output_stream.write("\n")
-        results_count += len(chunk_data)
+        results_count += len(typing.cast(typing.Sized, chunk_data))
 
     logger.debug(f"Tasks count: {tasks_count}, results count: {results_count}")
     return results_count

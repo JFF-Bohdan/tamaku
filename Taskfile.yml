@@ -65,7 +65,6 @@ tasks:
     desc: Runs tests and other checks and then builds package
     deps: [flake8, mypy, coverage, validate-package]
     cmds:
-      - $PYTHON task_helpers.py rm ./dist/*.whl ./dist/*.gz   
       - $PYTHON setup.py sdist
       - echo "Build successfull"
       
