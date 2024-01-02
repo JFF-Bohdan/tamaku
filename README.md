@@ -132,6 +132,9 @@ Where:
 - `--input-file ./data/small_data.txt` - path to input file
 - `--output-file ./results/small_data.txt` - path to output file
 
+Optionally you can use `--processes-count <num_processes>` to specify how many processes will be used 
+to process input file. if not specified all CPU cores would be used. 
+
 In case if zip-compressed file will be provided as input file, tool will automatically 
 decompress it in a temporary folder, process it and then delete temporary folder.
 

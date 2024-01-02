@@ -23,11 +23,12 @@ def chunk_processor(chunk: typing.Iterable[int]) -> typing.Iterable[data_types.W
 
 
 def process_stream(
-        input_stream, output_stream: typing.IO,
-        chunk_size: int = consts.DEFAULT_CHUNK_SIZE,
-        processes_count: typing.Optional[int] = None
+    input_stream, output_stream: typing.IO,
+    chunk_size: int = consts.DEFAULT_CHUNK_SIZE,
+    processes_count: typing.Optional[int] = None,
 ) -> int:
     processes_count = processes_count if processes_count else mp.cpu_count()
+    logger.debug(f"Processes count which would be used is {processes_count}")
 
     tasks_count = input_stream.readline()
     tasks_count = int(tasks_count)
@@ -55,7 +56,12 @@ def process_stream(
     return results_count
 
 
-def process_file(input_file: str, output_file: str, chunk_size: int = consts.DEFAULT_CHUNK_SIZE) -> int:
+def process_file(
+    input_file: str,
+    output_file: str,
+    chunk_size: int = consts.DEFAULT_CHUNK_SIZE,
+    processes_count: typing.Optional[int] = None
+) -> int:
     logger.debug(f"Input file: {input_file}")
     logger.debug(f"Output file: {output_file}")
 
@@ -66,5 +72,6 @@ def process_file(input_file: str, output_file: str, chunk_size: int = consts.DEF
         return process_stream(
             input_stream=input_stream,
             output_stream=output_stream,
-            chunk_size=chunk_size
+            chunk_size=chunk_size,
+            processes_count=processes_count
         )

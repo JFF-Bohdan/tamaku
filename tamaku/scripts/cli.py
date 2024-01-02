@@ -18,7 +18,13 @@ from tamaku import support_funcs
 @click.option("--input-file", required=True, help="Path to input file")
 @click.option("--output-file", required=True, help="Path to output file")
 @click.option("--chunk-size", default=consts.DEFAULT_CHUNK_SIZE, required=False, type=int, help="Processing chunk size")
-def tamaku(input_file: str, output_file: str, chunk_size: int):
+@click.option(
+    "--processes-count",
+    required=False,
+    type=int,
+    help="Number of processes which would be used to process input file"
+)
+def tamaku(input_file: str, output_file: str, chunk_size: int, processes_count: int):
     logger.info("Application started")
 
     tmp_folder_name = None
@@ -37,6 +43,7 @@ def tamaku(input_file: str, output_file: str, chunk_size: int):
             input_file=input_file,
             output_file=output_file,
             chunk_size=chunk_size,
+            processes_count=processes_count,
         )
         logger.debug(f"Processed tasks count: {processed_tasks_count}")
         time_end = time.monotonic()
