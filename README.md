@@ -71,7 +71,12 @@ Explanation:
 - In the first game, N=1 and Pat has no valid move, and looses.
 - In the second game, N=2. Pat subtracts 1, and Mat looses the game.
 
-## About the solution
+#### Additional requirements
+
+Solution and output file for [large_data.zip](./data/large_data.zip) is 
+need to be provided within 2 hours.
+
+## Solution
 
 This is a new version, focused on simplicity and efficiency. It uses `multiprocessing` for utilization of all CPU 
 cores and able to decompress input file if necessary.
