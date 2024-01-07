@@ -192,7 +192,7 @@ excluding time for decompression (if it was necessary).
 Example outputs:
 
 - `Done @ 6.0m 35.93s - 10000000 tasks processed` (older version, executed on i7-3632QM with 32 GiB RAM)
-- `Execution time 1 minute, 24 seconds and 94 milliseconds (10000000 tasks processed)` (i9-10885H with 64 GiB RAM)
+- `Execution time 51 seconds and 656 milliseconds (10000000 tasks processed)` (i9-10885H with 64 GiB RAM)
 
 If you would like to make it faster, you probably will focus on 
 `tamaku.solver:solve_task` and `tamaku.solver:find_best_response`. You can tune it with help of 
@@ -201,8 +201,8 @@ If you would like to make it faster, you probably will focus on
 Example results (on i9-10885H):
 
 ```
-$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)"
-5000 loops, best of 5: 55.6 usec per loop
+$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)
+10000 loops, best of 5: 32.5 usec per loop
 ```
 
 Hope you like it. Enjoy!
