@@ -28,7 +28,8 @@ def process_stream(
     processes_count: typing.Optional[int] = None,
 ) -> int:
     processes_count = processes_count if processes_count else mp.cpu_count()
-    logger.debug(f"Processes count which would be used is {processes_count}")
+    logger.debug(f"CPU cores count which would be used is {processes_count}")
+    logger.debug(f"Chunk size would be {chunk_size}")
 
     tasks_count = input_stream.readline()
     tasks_count = int(tasks_count)
