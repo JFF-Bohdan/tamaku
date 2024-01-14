@@ -201,7 +201,7 @@ If you would like to make it faster, you probably will focus on
 Example results (on i9-10885H):
 
 ```
-$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)
+$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)"
 10000 loops, best of 5: 32.5 usec per loop
 ```
 

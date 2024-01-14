@@ -5,12 +5,16 @@ from tests import datasets as test_datasets
 
 def test_solver_for_small_dataset():
     for value, expected_result in test_datasets.SMALL_DATA_SET:
-        assert expected_result == solver.solve_task(value)
+        solver_result = solver.solve_task(value)
+        assert expected_result == solver_result,\
+            f'Expected: {expected_result}. Got: {solver_result}. Input: {value}'
 
 
 def test_solver_for_big_dataset():
     for value, expected_result in test_datasets.BIG_DATA_SET:
-        assert expected_result == solver.solve_task(value)
+        solver_result = solver.solve_task(value)
+        assert expected_result == solver_result,\
+            f'Expected: {expected_result}. Got: {solver_result}. Input: {value}'
 
 
 def test_move_suggester():

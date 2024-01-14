@@ -14,7 +14,7 @@ def test_decompressor_can_decompress_file(tmp_path):
         AAABAAEAOwAAAKMAAAAAAA==
     """
 
-    input_zip_file = os.path.join("e:/tmp", "test_file.zip")
+    input_zip_file = os.path.join("/tmp", "test_file.zip")
     with open(input_zip_file, "wb") as output_file:
         decoded_data = base64.b64decode(compressed_data.encode("ascii"))
         output_file.write(decoded_data)
