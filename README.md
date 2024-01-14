@@ -96,6 +96,13 @@ and then (on Windows):
 .\venv\Scripts\activate
 ```
 
+or in Linux/WSL:
+
+```shell
+chmod +x ./venv/bin/activate
+./venv/bin/activate
+```
+
 then you need to install all dependencies by running:
 
 ```shell
@@ -129,6 +136,14 @@ You can run the application by using:
 
 ```shell
 tamaku --input-file ./data/small_data.txt --output-file ./results/small_data.txt
+```
+
+Note, you might need to create the results folder:
+
+Linux/WSL:
+
+```shell
+mkdir results
 ```
 
 Where:
@@ -201,7 +216,7 @@ If you would like to make it faster, you probably will focus on
 Example results (on i9-10885H):
 
 ```
-$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)
+$ python -m timeit --setup "from tamaku import solver" "solver.solve_task(789541776)"
 10000 loops, best of 5: 32.5 usec per loop
 ```
 
