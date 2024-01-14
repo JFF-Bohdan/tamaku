@@ -96,6 +96,13 @@ and then (on Windows):
 .\venv\Scripts\activate
 ```
 
+or in Linux/WSL:
+
+```shell
+chmod +x ./venv/bin/activate
+./venv/bin/activate
+```
+
 then you need to install all dependencies by running:
 
 ```shell
@@ -129,6 +136,14 @@ You can run the application by using:
 
 ```shell
 tamaku --input-file ./data/small_data.txt --output-file ./results/small_data.txt
+```
+
+Note, you might need to create the results folder:
+
+Linux/WSL:
+
+```shell
+mkdir results
 ```
 
 Where:
