@@ -73,7 +73,7 @@ def bohdan_solve_task(number: int) -> data_types.WinnerType:
 
 
 def agobeaux_solve_task(number: int) -> data_types.WinnerType:
-    '''
+    """
     Observations:
     1. To subract a number with only one '1' in its binary representation
     without changing the number of '1's in the original number,
@@ -93,7 +93,8 @@ def agobeaux_solve_task(number: int) -> data_types.WinnerType:
     0b010010 -> right '1' can move once, left '1' can move 3 times (3 zeroes).
     Sum all of those counts, and based on whether the number is even
     or odd, return the right answer.
-    '''
+    """
+
     cnt_zeroes = 0
     ans = 0
     while number > 0:
@@ -102,16 +103,9 @@ def agobeaux_solve_task(number: int) -> data_types.WinnerType:
         else:
             cnt_zeroes += 1
         number >>= 1  # 'fancy' version of number /= 2
-    if ans % 2 == 1:
-        return data_types.WinnerType.PAT
-    return data_types.WinnerType.MAT
+
+    return data_types.WinnerType.PAT if ans % 2 == 1 else data_types.WinnerType.MAT
 
 
-def solve_task(number: int) -> data_types.WinnerType:
-    """
-    Takes a number and then computes which player would win for it.
-
-    :param number: number which need to be tested.
-    :return: name of a player who would win.
-    """
-    return agobeaux_solve_task(number)
+# Common alias
+solve_task = agobeaux_solve_task
