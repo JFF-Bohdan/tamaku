@@ -33,25 +33,47 @@ def process_stream(
 
     tasks_count = input_stream.readline()
     tasks_count = int(tasks_count)
-    tasks_generator = chunks(
-        itertools.islice(
+
+    if (chunk_size > 1) or (processes_count > 1):
+        logger.debug("Multiprocessing solution will be used")
+        tasks_generator = chunks(
+            itertools.islice(
+                file_reader.yield_ints_from_stream(
+                    input_stream
+                ),
+                0,
+                tasks_count
+            ),
+            size=chunk_size
+        )
+    else:
+        logger.debug("Single processing (single core) solution will be used")
+        logger.debug("No buffering would be used (chunk size is 1)")
+        tasks_generator = itertools.islice(
             file_reader.yield_ints_from_stream(
                 input_stream
             ),
             0,
             tasks_count
-        ),
-        size=chunk_size
-    )
-
-    pool = mp.Pool(processes=processes_count)
-    results_generator = pool.map(chunk_processor, tasks_generator)
+        )
 
     results_count = 0
-    for _, chunk_data in enumerate(results_generator):
-        output_stream.write("\n".join(chunk_data))
-        output_stream.write("\n")
-        results_count += len(typing.cast(typing.Sized, chunk_data))
+    if processes_count > 1:
+        pool = mp.Pool(processes=processes_count)
+        results_generator = pool.map(chunk_processor, tasks_generator)
+    else:
+        results_generator = map(solver.solve_task, tasks_generator) if chunk_size == 1 \
+            else map(chunk_processor, tasks_generator)
+
+    if chunk_size > 1:
+        for chunk_data in results_generator:
+            output_stream.write("\n".join(chunk_data))
+            output_stream.write("\n")
+            results_count += len(typing.cast(typing.Sized, chunk_data))
+    else:
+        for result_item in results_generator:
+            output_stream.write(f"{result_item}\n")
+            results_count += 1
 
     logger.debug(f"Tasks count: {tasks_count}, results count: {results_count}")
     return results_count
@@ -66,13 +88,16 @@ def process_file(
     logger.debug(f"Input file: {input_file}")
     logger.debug(f"Output file: {output_file}")
 
-    with (
-        open(input_file, "rt") as input_stream,
-        open(output_file, "wt") as output_stream
-    ):
-        return process_stream(
-            input_stream=input_stream,
-            output_stream=output_stream,
-            chunk_size=chunk_size,
-            processes_count=processes_count
-        )
+    try:
+        with (
+            open(input_file, "rt") as input_stream,
+            open(output_file, "wt") as output_stream
+        ):
+            return process_stream(
+                input_stream=input_stream,
+                output_stream=output_stream,
+                chunk_size=chunk_size,
+                processes_count=processes_count
+            )
+    except Exception:
+        logger.exception("Error processing")
